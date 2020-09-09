@@ -1,3 +1,9 @@
+from pygame import mixer  # Load the popular external library
+
+mixer.init()
+mixer.music.load('Our-Mountain_v003_Looping.wav')
+mixer.music.play()
+
 from room import Room
 from player import Player
 from item import Item
