@@ -1,4 +1,13 @@
+from pygame import mixer  # Load the popular external library
+
+mixer.init()
+mixer.music.load('Our-Mountain_v003_Looping.wav')
+mixer.music.play(-1)
+mixer.music.set_volume(0.2)
+
 from room import Room
+from player import Player
+from item import Item
 
 # Declare all the rooms
 
@@ -35,10 +44,16 @@ room['treasure'].s_to = room['narrow']
 
 #
 # Main
-#
+# Add Items
+room['outside'].items.append(Item('Sword', 'used to slice up enemies'))
+room['foyer'].items.append(Item('Bow', 'used to shoot enemies from afar'))
+room['treasure'].items.append(Item('Gold Coin', 'some loot left behind'))
+
+# print('outside south:', room['outside'].n_to) # NOTE Valid
+# print('outside south:', room['outside'].s_to) # NOTE Will give error
 
 # Make a new player object that is currently in the 'outside' room.
-
+player = Player(room['outside'])
 # Write a loop that:
 #
 # * Prints the current room name
@@ -49,3 +64,17 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+print(player.room)
+
+lastRoom = player.room
+
+#Game Loop
+while 1:
+    command = input()
+    if command.find(' ') != -1:
+        player.modifyItem(command)
+    else:
+        player.changeRoom(command)
+        if lastRoom != player.room:
+            print(player.room)
+        lastRoom = player.room 
